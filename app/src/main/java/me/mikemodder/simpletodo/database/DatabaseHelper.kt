@@ -8,14 +8,14 @@ import android.util.Log
 class DatabaseHelper(ctx: Context) : SQLiteOpenHelper(ctx, "TodoDB", null, 1) {
 
     val TAG = "DBHelper"
-    val CREATE_DB = "CREATE TABLE IF NOT EXISTS`todos` (\n" +
-            " `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+    val CREATE_DB = "CREATE TABLE IF NOT EXISTS `todos` (\n" +
+            " `_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
             " `text` TEXT NOT NULL,\n" +
             " `done` INTEGER NOT NULL DEFAULT 0\n" +
             ");"
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.d(TAG, "Creating database...")
+        Log.d(TAG, "Creating database... Schema:\n $CREATE_DB")
         db?.execSQL(CREATE_DB)
     }
 

@@ -34,7 +34,9 @@ class MainActivity : AppCompatActivity() {
         lvTodos.adapter = todosAdapter
 
         lvTodos.onItemLongClickListener = AdapterView.OnItemLongClickListener { adapterView, view, i, l ->
-            todosAdapter.remove(todosAdapter.getItem(i))
+            val deleteTodo = todosAdapter.getItem(i)
+            todosAdapter.remove(deleteTodo)
+            DBUtil.removeTodo(deleteTodo)
             true
         }
 
@@ -43,13 +45,24 @@ class MainActivity : AppCompatActivity() {
     fun addListItem(view: View?) {
         val inputBox = findViewById<EditText>(R.id.inputBox)
         if (inputBox.text.toString() == "") return
-        if(inputBox.text.toString() == "db::nuke") return DBUtil.nukeDB()
+        if(inputBox.text.toString() == "db::nuke") {
+            DBUtil.nukeDB()
+            return redoList()
+        }
 
         val newTodo = Todo(inputBox.text.toString())
 
-        todosAdapter.add(newTodo)
         DBUtil.addTodo(newTodo)
+        redoList()
         inputBox.text.clear()
+    }
+
+    fun redoList() {
+        // Clear the ListView and re-add stuff from the DB
+        // Not the best way of doing this, as every change will cause the list to be redone
+        // However, this is my lazy fix to removing todos easily
+        todosAdapter.clear()
+        todosAdapter.addAll(DBUtil.getTodos())
     }
 
 }
