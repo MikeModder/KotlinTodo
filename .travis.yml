@@ -10,5 +10,5 @@ android:
     - android-21
     - android-27
 script:
-  - "./gradlew wrapper"
+  - "gradle wrapper"
   - "./gradlew build"
